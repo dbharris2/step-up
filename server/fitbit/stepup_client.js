@@ -21,6 +21,17 @@ export default class StepUpClient {
 
   async genAccessToken(code, callbackUrl) {
     this.accessToken = await this.client.getAccessToken(code, callbackUrl);
+    this.db.collection('users').replaceOne({
+      user_id: this.accessToken.user_id,
+    }, {
+      access_token: this.accessToken.access_token,
+      refresh_token: this.accessToken.refresh_token,
+      user_id: this.accessToken.user_id,
+    }, (err, doc) => {
+      if (err) {
+        console.log(err);
+      }
+    });
   }
 
   getAuthorizeUrl(scope, redirectUrl) {
