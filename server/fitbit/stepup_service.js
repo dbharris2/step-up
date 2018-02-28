@@ -8,41 +8,42 @@ export default class StepUpService {
     this.db_service = new DbService();
   }
 
-  async genAccessToken(code, callbackUrl) {
-    const stepup_client = new StepUpClient(
-      process.env.APP_ID,
-      process.env.APP_SECRET,
-    );
-    const access_token = await stepup_client.genAccessToken(code, callbackUrl);
-    const client = {
-      access_token: access_token,
-      stepup_client: stepup_client,
-    };
-    this.clients.push(client);
-    this.db_service.insertOneUser(client.access_token);
-  }
-
-  async genAccessTokens() {
-    const access_tokens = await this.db_service.genAccessTokens();
-    this.clients = access_tokens.map(access_token => {
-      return {
-        access_token: access_token,
-        stepup_client: new StepUpClient(
-          process.env.APP_ID,
-          process.env.APP_SECRET,
-        ),
-      };
-    });
-  }
-
   async genAll(url) {
     const data_promises = this.clients.map(client => {
       return client.stepup_client.gen(
         url,
-        client.access_token.access_token
+        client.user.access_token
       );
     });
     return await Promise.all(data_promises);
+  }
+
+  async genCreateUser(code, callbackUrl) {
+    const stepup_client = new StepUpClient(
+      process.env.APP_ID,
+      process.env.APP_SECRET,
+    );
+    const user = await stepup_client.genAccessToken(code, callbackUrl);
+    // TODO: If user already exists, update rather than insert
+    await this.db_service.genInsertOneUser(user);
+    const client = {
+      stepup_client: stepup_client,
+      user: user,
+    };
+    this.clients.push(client);
+  }
+
+  async genFetchUsers() {
+    const users = await this.db_service.genFetchUsers();
+    this.clients = users.map(user => {
+      return {
+        stepup_client: new StepUpClient(
+          process.env.APP_ID,
+          process.env.APP_SECRET,
+        ),
+        user: user,
+      };
+    });
   }
 
   setDb(db) {

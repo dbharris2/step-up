@@ -30,7 +30,7 @@ app.get('/authenticate', async (req, res) => {
 });
 
 app.get('/fitbit-callback', async (req, res) => {
-  await stepup_service.genAccessToken(
+  await stepup_service.genCreateUser(
     req.query.code,
     process.env.FITBIT_AUTHORIZATION_CALLBACK_URL,
   );
@@ -45,7 +45,7 @@ app.get('/profiles', async (req, res) => {
 export const start = async () => {
   await MongoClient.connect(process.env.MONGODB_URI, async (err, client) => {
     stepup_service.setDb(client.db('stepup'));
-    await stepup_service.genAccessTokens();
+    await stepup_service.genFetchUsers();
 
     app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
     app.use('/', bodyParser.json(), graphqlExpress({
