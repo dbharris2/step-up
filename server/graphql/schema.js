@@ -6,7 +6,7 @@ import {userQueryResolvers} from './user_resolvers';
 
 const rootQueries = `
   type Query {
-    user(_id: String): User
+    user(user_id: String): User
     users: [User]
   }
 `;

@@ -6,8 +6,12 @@ export default class DbService {
     this.db = null;
   }
 
-  replaceOneUser(access_token) {
-    this.db.collection('users').replaceOne({
+  async genAccessTokens() {
+    return await this.db.collection('users').find({}).toArray();
+  }
+
+  async replaceOneUser(access_token) {
+    await this.db.collection('users').replaceOne({
       user_id: access_token.user_id,
     }, {
       access_token: access_token.access_token,
