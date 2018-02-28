@@ -9,16 +9,17 @@ export default class StepUpService {
   }
 
   async genAccessToken(code, callbackUrl) {
+    const stepup_client = new StepUpClient(
+      process.env.APP_ID,
+      process.env.APP_SECRET,
+    );
     const access_token = await stepup_client.genAccessToken(code, callbackUrl);
     const client = {
       access_token: access_token,
-      stepup_client: new StepUpClient(
-        process.env.APP_ID,
-        process.env.APP_SECRET,
-      ),
+      stepup_client: stepup_client,
     };
     this.clients.push(client);
-    this.db_service.replaceOneUser(client.access_token);
+    this.db_service.insertOneUser(client.access_token);
   }
 
   async genAccessTokens() {
