@@ -6,11 +6,15 @@ export default class DbService {
     this.db = null;
   }
 
-  async genInsertOneUser(access_token) {
-    await this.db.collection('users').insertOne({
-      access_token: access_token.access_token,
-      refresh_token: access_token.refresh_token,
-      user_id: access_token.user_id,
+  async genUpdateOneUser(user) {
+    await this.db.collection('users').replaceOne({
+      user_id: user.user_id,
+    }, {
+      access_token: user.access_token,
+      refresh_token: user.refresh_token,
+      user_id: user.user_id,
+    }, {
+      upsert: true,
     }, (err, doc) => {
       if (err) {
         console.log(err);

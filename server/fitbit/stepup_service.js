@@ -24,8 +24,7 @@ export default class StepUpService {
       process.env.APP_SECRET,
     );
     const user = await stepup_client.genAccessToken(code, callbackUrl);
-    // TODO: If user already exists, update rather than insert
-    await this.db_service.genInsertOneUser(user);
+    await this.db_service.genUpdateOneUser(user);
     const client = {
       stepup_client: stepup_client,
       user: user,
