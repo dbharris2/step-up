@@ -25,11 +25,14 @@ export default class StepUpService {
     );
     const user = await stepup_client.genAccessToken(code, callbackUrl);
     await this.db_service.genUpdateOneUser(user);
-    const client = {
+
+    this.clients = this.clients.filter(client =>
+      client.user.user_id !== user.user_id
+    );
+    this.clients.push({
       stepup_client: stepup_client,
       user: user,
-    };
-    this.clients.push(client);
+    });
   }
 
   async genFetchUsers() {
