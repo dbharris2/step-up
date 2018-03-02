@@ -1,0 +1,42 @@
+.ParticipantLeaderboard-table {
+    font-family: "Proxima Nova";
+    font-size: 0.875rem;
+    width: 80%;
+    color: #191926;
+    margin-left: 10%;
+}
+
+.ParticipantLeaderboard-cell {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.ParticipantLeaderboard-header-cell {
+    background-color: #fafafc;
+    border-bottom: 0.0625rem solid #e3e6eb;
+    color: #191926;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.ParticipantLeaderboard {
+    font-family: "Proxima Nova";
+    text-align: center;
+    width: 100%;
+}
+
+.ParticipantLeaderboard h1 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.ParticipantLeaderboard-footer {
+    background-color: #fafafc;
+    border-top: 0.0625rem solid #e3e6eb
+}
+
+.ParticipantLeaderboard-team-cell {
+    font-weight: 600;
+}

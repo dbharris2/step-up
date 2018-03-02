@@ -1,0 +1,17 @@
+.ProgressBar-Container {
+    width: 100%;
+    border: 0.0625rem solid #e3e6eb;
+    background-color: #fff;
+    transition: all 200ms ease-out;
+    height: 0.75rem;
+    overflow: hidden;
+}
+
+.ProgressBar-FilledIn {
+    height: 0.75rem;
+}
+
+.ProgressBar-Wrapper {
+    text-align: left;
+    font-size: .75rem;
+}
