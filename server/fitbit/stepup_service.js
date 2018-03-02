@@ -12,10 +12,17 @@ export default class StepUpService {
     const data_promises = this.clients.map(client => {
       return client.stepup_client.gen(
         url,
-        client.user.access_token
+        client.user,
       );
     });
-    return await Promise.all(data_promises);
+    const data_responses = await Promise.all(data_promises);
+
+    const user_update_promises = data_responses.map(response => {
+      return this.db_service.genUpdateOneUser(response.user);
+    });
+    await Promise.all(user_update_promises);
+
+    return data_responses.map(response => response.data[0]);
   }
 
   async genCreateUser(code, callbackUrl) {
@@ -33,6 +40,7 @@ export default class StepUpService {
       stepup_client: stepup_client,
       user: user,
     });
+    console.log(this.clients.map(client => client.user.user_id));
   }
 
   async genFetchUsers() {
@@ -46,6 +54,8 @@ export default class StepUpService {
         user: user,
       };
     });
+    console.log('Fetched users');
+    console.log(this.clients.map(client => client.user.user_id));
   }
 
   setDb(db) {
