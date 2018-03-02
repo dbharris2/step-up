@@ -1,12 +1,5 @@
 import FitbitApiClient from 'fitbit-node';
 
-function to(promise) {
-   return promise.then(data => {
-      return [null, data];
-   })
-   .catch(err => [err]);
-}
-
 export default class StepUpClient {
 
   constructor(clientId, clientSecret) {
@@ -18,25 +11,25 @@ export default class StepUpClient {
   }
 
   async gen(url, user) {
-    const [error, data] = await to(this.client.get(url, user.access_token));
-    console.log("Error: " + error);
-    if (error !== null && error.errors[0].errorType === 'expired_token') {
-      console.log('Expired token');
+    const data = await this.client.get(url, user.access_token);
+    if (data[0].success === undefined) {
+      return {
+        user: user,
+        data: data,
+      };
+    } else if (!data[0].success && data[0].errors[0].errorType === 'expired_token') {
       const updated_user = await this.client.refreshAccessToken(
         user.access_token,
         user.refresh_token,
         -1,
       );
-      console.log('Updated user: ' + updated_user.user_id);
+      const updated_data = await this.client.get(url, updated_user.access_token);
       return {
         user: updated_user,
-        data: data,
+        data: updated_data,
       };
     } else {
-      return {
-        user: user,
-        data: data,
-      };
+      return {};
     }
   }
 

@@ -18,7 +18,7 @@ export default class StepUpService {
     const data_responses = await Promise.all(data_promises);
 
     const user_update_promises = data_responses.map(response => {
-      return this.db_service.genUpdateOneUser(response.user);
+      return this.db_service.genReplaceUser(response.user);
     });
     await Promise.all(user_update_promises);
 

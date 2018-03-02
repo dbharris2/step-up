@@ -38,7 +38,8 @@ export default class DbService {
     });
   }
 
-  async genUpdateOneUser(user) {
+  async genReplaceUser(user) {
+    console.log('Update user: ' + user.user_id);
     await this.db.collection('users').replaceOne({
       user_id: user.user_id,
     }, {
