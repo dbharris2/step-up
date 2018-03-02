@@ -1,8 +1,6 @@
-import {ObjectId} from 'mongodb'
-
 const userQueryResolvers = {
-  user: async (root, {_id}, context) => {
-    return await context.db.collection('users').findOne(ObjectId(_id));
+  user: async (root, {user_id}, context) => {
+    return await context.db.collection('users').findOne({user_id});
   },
   users: async (root, args, context) => {
     return await context.db.collection('users').find({}).toArray();

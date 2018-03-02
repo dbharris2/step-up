@@ -1,7 +1,7 @@
 const User = `
   type User {
     _id: String
-    name: String
+    user_id: String
   }
 `;
 
