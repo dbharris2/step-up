@@ -22,6 +22,11 @@ export default class StepUpService {
     });
     await Promise.all(user_update_promises);
 
+    return data_responses;
+  }
+
+  async genAllData(url) {
+    const data_responses = await this.genAll(url);
     return data_responses.map(response => response.data[0]);
   }
 
@@ -56,6 +61,14 @@ export default class StepUpService {
     });
     console.log('Fetched users');
     console.log(this.clients.map(client => client.user.user_id));
+  }
+
+  async genReplaceUserTimeSeries(user_id, time_series) {
+    return await this.db_service.genReplaceUserTimeSeries(user_id, time_series);
+  }
+
+  async genReplaceUserProfile(profile) {
+    return await this.db_service.genReplaceUserProfile(profile);
   }
 
   setDb(db) {

@@ -4,7 +4,9 @@
   "author": "Devon Harris",
   "license": "MIT",
   "scripts": {
-    "server": "babel-node server"
+    "server": "babel-node server",
+    "fetch-fitbit-profile": "babel-node ./scripts/fetch_fitbit_profile.js",
+    "fetch-fitbit-time-series": "babel-node ./scripts/fetch_fitbit_time_series.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

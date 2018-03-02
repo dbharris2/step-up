@@ -38,7 +38,7 @@ app.get('/fitbit-callback', async (req, res) => {
 });
 
 app.get('/profiles', async (req, res) => {
-  const profiles = await stepup_service.genAll('/profile.json');
+  const profiles = await stepup_service.genAllData('/profile.json');
   res.send(profiles);
 });
 
