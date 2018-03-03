@@ -36,7 +36,7 @@ export default class StepUpService {
       process.env.APP_SECRET,
     );
     const user = await stepup_client.genAccessToken(code, callbackUrl);
-    await this.db_service.genUpdateOneUser(user);
+    await this.db_service.genReplaceUser(user);
 
     this.clients = this.clients.filter(client =>
       client.user.user_id !== user.user_id

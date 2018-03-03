@@ -15,6 +15,8 @@ const app = express();
 app.set('port', process.env.PORT || 8080);
 app.use(cors());
 
+console.log('auth url: ' + process.env.FITBIT_AUTHORIZATION_CALLBACK_URL);
+
 const stepup_service = new StepUpService();
 
 app.get('/authenticate', async (req, res) => {
@@ -23,7 +25,7 @@ app.get('/authenticate', async (req, res) => {
     process.env.APP_SECRET,
   );
   const authorizeUrl = stepup_client.getAuthorizeUrl(
-    'activity heartrate location profile settings sleep social',
+    'activity location profile settings sleep social',
     process.env.FITBIT_AUTHORIZATION_CALLBACK_URL,
   );
   res.redirect(authorizeUrl);
