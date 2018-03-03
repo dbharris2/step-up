@@ -43,7 +43,11 @@ app.get('/profiles', async (req, res) => {
 });
 
 export const start = async () => {
-  await MongoClient.connect(process.env.MONGODB_URI, async (err, client) => {
+  MongoClient.connect(process.env.MONGODB_URI, async (err, client) => {
+    if (err) {
+      console.log(err);
+      process.exit(1);
+    }
     stepup_service.setDb(client.db('stepup'));
     await stepup_service.genFetchUsers();
 
