@@ -1,50 +1,83 @@
 import React, { Component } from 'react';
 import './App.css';
 import ParticipantLeaderboard from './ParticipantLeaderboard';
+import GraphQL from './graphql';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [],
+    }
+  }
+
   render() {
-    let tiers = [{
-      "average": 10000,
-      "total": 100000,
-    },{
-      "average": 12500,
-      "total": 125000,
-    },{
-      "average": 15000,
-      "total": 150000,
-    }];
+    let tiers = [
+      {"average": 10000, "total": 200000,},
+      {"average": 12500, "total": 215000,},
+      {"average": 25000, "total": 430000,},
+    ];
 
-    let teamStepInfo = {
-      "average": 13101,
-      "total": 100101,
-    };
+    if (this.state.users !== null && this.state.users.length > 0) {
+      const participants_info = this.state.users.map(user => {
+        const total_steps = user.time_series.reduce(
+          (accumulator, entry) => accumulator + parseInt(entry.value),
+          0,
+        );
+        return {
+          average: Math.round(total_steps / user.time_series.length),
+          id: user.user_id,
+          name: user.profile.displayName,
+          total: total_steps,
+        };
+      });
 
-    let participantInfo = [{
-      name: "Caroline Modic",
-      average: 12510,
-      total: 52130,
-      id: 1
-    }, {
-      name: "Devon Harris",
-      average: 10101,
-      total: 45971,
-      id: 2
-    }, {
-      name: "Emma ???",
-      average: 132,
-      total: 2000,
-      id: 3
-    }];
+      const team_step_info = participants_info.reduce(
+        (accumulator, participant_info) => {
+          return {
+            "average": accumulator.average + participant_info.average,
+            "total": accumulator.total + participant_info.total,
+          };
+        },
+        {
+          "average": 0,
+          "total": 0,
+        },
+      );
 
-    return (
-      <ParticipantLeaderboard
-        tiers={tiers}
-        teamStepInfo={teamStepInfo}
-        participantsInfo={participantInfo}
-        loggedInUser={1}
-      />
-    )
+      return (
+        <ParticipantLeaderboard
+          tiers={tiers}
+          teamStepInfo={team_step_info}
+          participantsInfo={participants_info}
+          loggedInUser={1}
+        />
+      )
+    } else {
+      GraphQL({
+        query:`
+          query Users {
+            users {
+              _id
+              user_id
+              profile {
+                avatar
+                displayName
+                user_id
+              }
+              time_series {
+                date
+                value
+                user_id
+              }
+            }
+          }`,
+      }).then(res => {
+        this.setState({users: res.data.users});
+      });
+      return (<div></div>);
+    }
   }
 }
 
