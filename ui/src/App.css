@@ -22,6 +22,17 @@
   font-size: large;
 }
 
+.App-join {
+  background-color: #01DDCB;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+
+a:active {
+  background-color: #79DDCB;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

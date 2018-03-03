@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Flexbox from 'flexbox-react';
 import ParticipantLeaderboard from './ParticipantLeaderboard';
 import GraphQL from './graphql';
 
@@ -47,12 +48,26 @@ class App extends Component {
       );
 
       return (
-        <ParticipantLeaderboard
-          tiers={tiers}
-          teamStepInfo={team_step_info}
-          participantsInfo={participants_info}
-          loggedInUser={1}
-        />
+        <Flexbox alignItems="stretch" flexDirection="column">
+          <Flexbox
+            alignItems="center"
+            className="App-header"
+            flexDirection="row"
+            flexWrap="wrap"
+            justifyContent="space-around"
+            >
+            <h2>Step Challenge 2018</h2>
+            <a className="App-join" href="/authenticate">Join the Fun!</a>
+          </Flexbox>
+          <Flexbox flexDirection="row">
+            <ParticipantLeaderboard
+              tiers={tiers}
+              teamStepInfo={team_step_info}
+              participantsInfo={participants_info}
+              loggedInUser={1}
+            />
+          </Flexbox>
+        </Flexbox>
       )
     } else {
       GraphQL({
