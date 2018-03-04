@@ -4,10 +4,9 @@
   "author": "Devon Harris",
   "license": "MIT",
   "scripts": {
-    "server": "babel-node server",
-    "fetch-fitbit-profile": "babel-node ./scripts/fetch_fitbit_profile.js",
-    "fetch-fitbit-time-series": "babel-node ./scripts/fetch_fitbit_time_series.js",
-    "start": "babel-node server"
+    "fetch-fitbit-data": "babel-node ./scripts/fetch_fitbit_data.js",
+    "start": "babel-node server",
+    "heroku-postbuild": "cd ui && npm install && npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",

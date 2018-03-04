@@ -20,6 +20,7 @@ console.log('auth url: ' + process.env.FITBIT_AUTHORIZATION_CALLBACK_URL);
 const stepup_service = new StepUpService();
 
 app.get('/authenticate', async (req, res) => {
+  console.log("Authenticate");
   const stepup_client = new StepUpClient(
     process.env.APP_ID,
     process.env.APP_SECRET,
@@ -36,6 +37,8 @@ app.get('/fitbit-callback', async (req, res) => {
     req.query.code,
     process.env.FITBIT_AUTHORIZATION_CALLBACK_URL,
   );
+  await stepup_service.genAllUserProfiles();
+  await stepup_service.genAllUserTimeSeries();
   res.redirect('/');
 });
 

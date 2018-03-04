@@ -30,6 +30,27 @@ export default class StepUpService {
     return data_responses.map(response => response.data[0]);
   }
 
+  async genAllUserProfiles() {
+    const responses = await this.genAll('/profile.json');
+    const profile_promises = responses.map(async response =>
+      this.genReplaceUserProfile(response.data[0])
+    );
+    await Promise.all(profile_promises);
+  }
+
+  async genAllUserTimeSeries() {
+    const responses = await this.genAll(
+      '/activities/steps/date/2017-04-20/2017-05-05.json'
+    );
+    const time_series_promises = responses.map(async response =>
+      this.genReplaceUserTimeSeries(
+        response.user.user_id,
+        response.data[0],
+      )
+    );
+    await Promise.all(time_series_promises);
+  }
+
   async genCreateUser(code, callbackUrl) {
     const stepup_client = new StepUpClient(
       process.env.APP_ID,

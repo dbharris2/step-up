@@ -12,13 +12,8 @@ const start = async () => {
     const stepup_service = new StepUpService();
     stepup_service.setDb(client.db('stepup'));
     await stepup_service.genFetchUsers();
-    const responses = await stepup_service.genAll('/profile.json');
-
-    const profile_promises = responses.map(async response =>
-      stepup_service.genReplaceUserProfile(response.data[0])
-    );
-    await Promise.all(profile_promises);
-
+    await stepup_service.genAllUserProfiles();
+    await stepup_service.genAllUserTimeSeries();
     await sleep(500);
     client.close();
     process.exit();
