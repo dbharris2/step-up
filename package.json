@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "fetch-fitbit-data": "babel-node ./scripts/fetch_fitbit_data.js",
-    "start": "babel-node server",
+    "start": "babel-node server/index.js",
     "heroku-postbuild": "cd ui && npm install && npm run build"
   },
   "dependencies": {
