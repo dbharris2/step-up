@@ -14,6 +14,7 @@ const rootQueries = `
     time_series(user_id: String): [TimeSeries]
     user(user_id: String): User
     users: [User]
+    yesterdays_steps(user_id: String): TimeSeries
   }
 `;
 

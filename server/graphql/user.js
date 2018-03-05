@@ -7,6 +7,7 @@ const User = `
     profile: Profile
     time_series: [TimeSeries]
     user_id: String
+    yesterdays_steps: TimeSeries
   }
 `;
 

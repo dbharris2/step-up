@@ -15,9 +15,9 @@ class App extends Component {
 
   render() {
     let tiers = [
-      {"average": 10000, "total": 200000,},
-      {"average": 12500, "total": 215000,},
-      {"average": 25000, "total": 430000,},
+      {"average": 10000, "total": 200000, "yesterday": 10000,},
+      {"average": 12500, "total": 215000, "yesterday": 12500,},
+      {"average": 25000, "total": 430000, "yesterday": 25000,},
     ];
 
     if (this.state.users !== null && this.state.users.length > 0) {
@@ -31,6 +31,7 @@ class App extends Component {
           id: user.user_id,
           name: user.profile.displayName,
           total: total_steps,
+          yesterdays_steps: parseInt(user.yesterdays_steps.value),
         };
       });
 
@@ -39,11 +40,13 @@ class App extends Component {
           return {
             "average": accumulator.average + participant_info.average,
             "total": accumulator.total + participant_info.total,
+            "yesterday": accumulator.yesterday + participant_info.yesterdays_steps,
           };
         },
         {
           "average": 0,
           "total": 0,
+          "yesterday": 0,
         },
       );
 
@@ -82,6 +85,11 @@ class App extends Component {
                 user_id
               }
               time_series {
+                date
+                value
+                user_id
+              }
+              yesterdays_steps {
                 date
                 value
                 user_id

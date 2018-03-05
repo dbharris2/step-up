@@ -11,6 +11,17 @@ const timeSeriesQueryResolvers = {
       };
     });
   },
+  yesterdays_steps: async (root, {user_id}, context) => {
+    const response = await context.db.collection('fitbit_time_series').findOne({
+      user_id,
+    });
+    const data = response.time_series['activities-steps'].pop();
+    return {
+      date: data.dateTime,
+      user_id: response.user_id,
+      value: data.value,
+    };
+  },
 };
 
 const timeSeriesEdgeResolvers = {
@@ -25,6 +36,17 @@ const timeSeriesEdgeResolvers = {
         value: data.value,
       };
     });
+  },
+  yesterdays_steps: async (root, {}, context) => {
+    const response = await context.db.collection('fitbit_time_series').findOne({
+      user_id: root.user_id,
+    });
+    const data = response.time_series['activities-steps'].pop();
+    return {
+      date: data.dateTime,
+      user_id: response.user_id,
+      value: data.value,
+    };
   },
 }
 
