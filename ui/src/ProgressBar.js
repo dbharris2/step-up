@@ -55,7 +55,7 @@ class ProgressBar extends Component {
                 style["backgroundColor"] = "#01D59A";
                 break;
             default:
-                style["backgroundColor"] = "#E838BF";
+                style["backgroundColor"] = "#7E1DFF";
                 break;
         }
         return (
