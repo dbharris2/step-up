@@ -10,8 +10,10 @@ import {userQueryResolvers} from './user_resolvers';
 
 const rootQueries = `
   type Query {
+    average_steps(user_id: String): TimeSeries
     profile(user_id: String): Profile
     time_series(user_id: String): [TimeSeries]
+    total_steps(user_id: String): TimeSeries
     user(user_id: String): User
     users: [User]
     yesterdays_steps(user_id: String): TimeSeries
