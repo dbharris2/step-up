@@ -22,18 +22,16 @@ class App extends Component {
 
     if (this.state.users !== null && this.state.users.length > 0) {
       const participants_info = this.state.users.map(user => {
-        const total_steps = user.time_series.reduce(
-          (accumulator, entry) => accumulator + parseInt(entry.value),
-          0,
-        );
         return {
-          average: Math.round(total_steps / user.time_series.length),
+          average: parseInt(user.average_steps.value),
           id: user.user_id,
           name: user.profile.displayName,
-          total: total_steps,
+          total: parseInt(user.total_steps.value),
           yesterdays_steps: parseInt(user.yesterdays_steps.value),
         };
       });
+
+      debugger;
 
       const team_step_info = participants_info.reduce(
         (accumulator, participant_info) => {
@@ -79,6 +77,9 @@ class App extends Component {
             users {
               _id
               user_id
+              average_steps {
+                value
+              }
               profile {
                 avatar
                 displayName
@@ -87,12 +88,13 @@ class App extends Component {
               time_series {
                 date
                 value
-                user_id
+              }
+              total_steps {
+                value
               }
               yesterdays_steps {
                 date
                 value
-                user_id
               }
             }
           }`,
