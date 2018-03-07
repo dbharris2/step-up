@@ -57,7 +57,7 @@ class App extends Component {
             className="App-header"
             flexDirection="row"
             flexWrap="wrap"
-            justifyContent="space-around"
+            justifyContent="space-between"
             >
             <h2>Step Challenge 2018</h2>
             <a className="App-join" href="/authenticate">Join the Fun!</a>
