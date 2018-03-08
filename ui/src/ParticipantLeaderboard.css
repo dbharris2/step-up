@@ -40,3 +40,7 @@
 .ParticipantLeaderboard-team-cell {
     font-weight: 600;
 }
+
+.ParticipantLeaderboard-rounded-corners {
+    border-radius: 40px;
+}

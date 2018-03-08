@@ -1,3 +1,4 @@
+import Flexbox from 'flexbox-react';
 import React, { Component } from 'react';
 import './ParticipantLeaderboard.css';
 import _ from "lodash"
@@ -12,7 +13,10 @@ class ParticipantLeaderboard extends Component {
     for (let person of this.props.participantsInfo) {
       contestantRows.push(
         <tr key={person["id"]} className="ParticipantLeaderboard-table-row">
-          <td key={0} className="ParticipantLeaderboard-cell"> {person["name"]} </td>
+          <Flexbox key={0} className="ParticipantLeaderboard-cell" alignItems="center" justifyContent="center">
+            <img className="ParticipantLeaderboard-rounded-corners" src={person.avatar} width={48} height={48} hspace={8} />
+            {person["name"]}
+          </Flexbox>
           <td key={1} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person.yesterdays_steps} tiers={yesterdayTiers} /> </td>
           <td key={2} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person["average"]} tiers={averageTiers} /> </td>
           <td key={3} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person["total"]} tiers={totalTiers} /> </td>

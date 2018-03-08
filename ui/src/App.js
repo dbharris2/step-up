@@ -23,6 +23,7 @@ class App extends Component {
     if (this.state.users !== null && this.state.users.length > 0) {
       const participants_info = this.state.users.map(user => {
         return {
+          avatar: user.profile.avatar,
           average: parseInt(user.average_steps.value),
           id: user.user_id,
           name: user.profile.displayName,
@@ -30,8 +31,6 @@ class App extends Component {
           yesterdays_steps: parseInt(user.yesterdays_steps.value),
         };
       });
-
-      debugger;
 
       const team_step_info = participants_info.reduce(
         (accumulator, participant_info) => {
