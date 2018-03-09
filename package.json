@@ -5,10 +5,12 @@
   "license": "MIT",
   "scripts": {
     "fetch-fitbit-data": "babel-node ./scripts/fetch_fitbit_data.js",
+    "slack-daily-steps": "babel-node ./scripts/slack_daily_steps.js",
     "start": "babel-node server/index.js",
     "heroku-postbuild": "cd ui && npm install && npm run build"
   },
   "dependencies": {
+    "apollo-fetch": "^0.7.0",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
