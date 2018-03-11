@@ -28,11 +28,8 @@ class App extends Component {
   };
 
   render() {
-    let tiers = [
-      {"average": 10000, "total": 200000, "yesterday": 10000,},
-      {"average": 12500, "total": 215000, "yesterday": 12500,},
-      {"average": 25000, "total": 430000, "yesterday": 25000,},
-    ];
+    const total_steps_tiers = [200000, 215000, 225000];
+    const day_step_tiers = [10000, 12500, 15000];
 
     if (this.state.users !== null && this.state.users.length > 0) {
       const participants_info = this.state.users.map(user => {
@@ -67,19 +64,25 @@ class App extends Component {
             <StepsCard
               title="Total Steps"
               users={this.state.users}
-              tiers={[200000, 215000, 225000]}
+              team={team_step_info.total}
+              tiers={total_steps_tiers}
+              teamTiers={total_steps_tiers.map(tier => tier * this.state.users.length)}
               stepsForUser={user => user.total_steps.value}
             />
             <StepsCard
               title="Yesterday's Steps"
               users={this.state.users}
-              tiers={[10000, 12500, 15000]}
+              team={team_step_info.yesterday}
+              tiers={day_step_tiers}
+              teamTiers={day_step_tiers.map(tier => tier * this.state.users.length)}
               stepsForUser={user => user.yesterdays_steps.value}
             />
             <StepsCard
               title="Average Steps"
               users={this.state.users}
-              tiers={[10000, 12500, 15000]}
+              team={team_step_info.average}
+              tiers={day_step_tiers}
+              teamTiers={day_step_tiers.map(tier => tier * this.state.users.length)}
               stepsForUser={user => user.average_steps.value}
             />
           </div>
@@ -90,7 +93,8 @@ class App extends Component {
         return (
           <Flexbox flexDirection="row" alignItems="center">
             <ParticipantLeaderboard
-              tiers={tiers}
+              totalStepTiers={total_steps_tiers}
+              dayStepTiers={day_step_tiers}
               teamStepInfo={team_step_info}
               participantsInfo={participants_info}
               loggedInUser={1}

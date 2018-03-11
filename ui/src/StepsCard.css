@@ -1,0 +1,8 @@
+.StepsCard-Container {
+  border-top: 15px solid rgb(230, 232, 235);
+  padding: 0px 10px;
+}
+
+.StepsCard-Container:first-child {
+  border: none;
+}

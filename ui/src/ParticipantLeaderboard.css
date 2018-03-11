@@ -1,9 +1,7 @@
 .ParticipantLeaderboard-table {
-    font-family: "Proxima Nova";
     font-size: 0.875rem;
-    width: 80%;
+    width: 100%;
     color: #191926;
-    margin-left: 10%;
 }
 
 .ParticipantLeaderboard-cell {
@@ -22,7 +20,6 @@
 }
 
 .ParticipantLeaderboard {
-    font-family: "Proxima Nova";
     text-align: center;
     width: 100%;
 }
