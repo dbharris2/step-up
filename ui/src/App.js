@@ -3,6 +3,7 @@ import './App.css';
 import Flexbox from 'flexbox-react';
 import ParticipantLeaderboard from './ParticipantLeaderboard';
 import GraphQL from './graphql';
+import StepsCard from './StepsCard'
 
 class App extends Component {
 
@@ -10,8 +11,21 @@ class App extends Component {
     super(props);
     this.state = {
       users: [],
+      width: window.innerWidth,
     }
   }
+
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
 
   render() {
     let tiers = [
@@ -47,19 +61,34 @@ class App extends Component {
         },
       );
 
-      return (
-        <Flexbox alignItems="stretch" flexDirection="column">
-          <Flexbox
-            alignItems="center"
-            className="App-header"
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            >
-            <h2>Step Challenge 2018</h2>
-            <a className="App-join" href="/authenticate">Join the Fun!</a>
-          </Flexbox>
-          <Flexbox flexDirection="row">
+      const mobileUI = () => {
+        return (
+          <div className="App-cards">
+            <StepsCard
+              title="Total Steps"
+              users={this.state.users}
+              tiers={[200000, 215000, 225000]}
+              stepsForUser={user => user.total_steps.value}
+            />
+            <StepsCard
+              title="Yesterday's Steps"
+              users={this.state.users}
+              tiers={[10000, 12500, 15000]}
+              stepsForUser={user => user.yesterdays_steps.value}
+            />
+            <StepsCard
+              title="Average Steps"
+              users={this.state.users}
+              tiers={[10000, 12500, 15000]}
+              stepsForUser={user => user.average_steps.value}
+            />
+          </div>
+        );
+      };
+
+      const desktopUI = () => {
+        return (
+          <Flexbox flexDirection="row" alignItems="center">
             <ParticipantLeaderboard
               tiers={tiers}
               teamStepInfo={team_step_info}
@@ -67,8 +96,18 @@ class App extends Component {
               loggedInUser={1}
             />
           </Flexbox>
+        );
+      };
+
+      return (
+        <Flexbox alignItems="stretch" flexDirection="column">
+          <Flexbox className="App-header" justifyContent="space-between" alignItems="center">
+            <h4>Steps 4 Days</h4>
+            <a className="App-join" href="/authenticate">Join the Fun!</a>
+          </Flexbox>
+          {this.state.width < 500 ? mobileUI() : desktopUI()}
         </Flexbox>
-      )
+      );
     } else {
       GraphQL({
         query:`

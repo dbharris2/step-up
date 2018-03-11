@@ -1,0 +1,29 @@
+.StepsCell-align-center {
+  align-items: center;
+}
+
+.StepsCell-container {
+  display: flex;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+.StepsCell-flex {
+  display: flex;
+}
+
+.StepsCell-grow {
+  flex-grow: 1;
+}
+
+.StepsCell-half-width {
+  width: 50%;
+}
+
+.StepsCell-rounded-corners {
+  border-radius: 40px;
+}
+
+.StepsCell-margin-right {
+  margin-right: 8px;
+}
