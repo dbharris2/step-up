@@ -11,6 +11,7 @@ class StepsCard extends Component {
         {this.props.users.map(user =>
           <StepsCell
             avatar={user.profile.avatar}
+            key={user.user_id}
             name={user.profile.displayName}
             steps={this.props.stepsForUser(user)}
             tiers={this.props.tiers}

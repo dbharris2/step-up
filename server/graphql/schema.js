@@ -12,14 +12,14 @@ import {userQueryResolvers} from './user_resolvers';
 
 const rootQueries = `
   type Query {
-    average_steps(user_id: String): TimeSeries
+    average_steps(user_id: String): Int
     competition: Competition
     profile(user_id: String): Profile
     time_series(user_id: String): [TimeSeries]
-    total_steps(user_id: String): TimeSeries
+    total_steps(user_id: String): Int
     user(user_id: String): User
     users: [User]
-    yesterdays_steps(user_id: String): TimeSeries
+    yesterdays_steps(user_id: String): Int
   }
 `;
 

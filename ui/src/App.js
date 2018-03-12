@@ -41,7 +41,7 @@ class App extends Component {
               team={this.state.competition.total_steps}
               tiers={total_steps_tiers}
               teamTiers={total_steps_tiers.map(tier => tier * this.state.competition.users.length)}
-              stepsForUser={user => user.total_steps.value}
+              stepsForUser={user => user.total_steps}
             />
             <StepsCard
               title="Yesterday's Steps"
@@ -49,7 +49,7 @@ class App extends Component {
               team={this.state.competition.yesterdays_steps}
               tiers={day_step_tiers}
               teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
-              stepsForUser={user => user.yesterdays_steps.value}
+              stepsForUser={user => user.yesterdays_steps}
             />
             <StepsCard
               title="Average Steps"
@@ -57,7 +57,7 @@ class App extends Component {
               team={this.state.competition.average_steps}
               tiers={day_step_tiers}
               teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
-              stepsForUser={user => user.average_steps.value}
+              stepsForUser={user => user.average_steps}
             />
           </div>
         );
@@ -94,12 +94,9 @@ class App extends Component {
               yesterdays_steps
               users {
                 user_id
-                average_steps {
-                  value
-                }
-                total_steps {
-                  value
-                }
+                yesterdays_steps
+                average_steps
+                total_steps
                 profile {
                   avatar
                   displayName
@@ -109,10 +106,6 @@ class App extends Component {
                   date
                   value
                   user_id
-                }
-                yesterdays_steps {
-                  date
-                  value
                 }
               }
             }
