@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      competition: null,
       width: window.innerWidth,
     }
   }
@@ -31,58 +31,32 @@ class App extends Component {
     const total_steps_tiers = [200000, 215000, 225000];
     const day_step_tiers = [10000, 12500, 15000];
 
-    if (this.state.users !== null && this.state.users.length > 0) {
-      const participants_info = this.state.users.map(user => {
-        return {
-          avatar: user.profile.avatar,
-          average: parseInt(user.average_steps.value),
-          id: user.user_id,
-          name: user.profile.displayName,
-          total: parseInt(user.total_steps.value),
-          yesterdays_steps: parseInt(user.yesterdays_steps.value),
-        };
-      });
-
-      const team_step_info = participants_info.reduce(
-        (accumulator, participant_info) => {
-          return {
-            "average": accumulator.average + participant_info.average,
-            "total": accumulator.total + participant_info.total,
-            "yesterday": accumulator.yesterday + participant_info.yesterdays_steps,
-          };
-        },
-        {
-          "average": 0,
-          "total": 0,
-          "yesterday": 0,
-        },
-      );
-
+    if (this.state.competition !== null) {
       const mobileUI = () => {
         return (
           <div className="App-cards">
             <StepsCard
               title="Total Steps"
-              users={this.state.users}
-              team={team_step_info.total}
+              users={this.state.competition.users}
+              team={this.state.competition.total_steps}
               tiers={total_steps_tiers}
-              teamTiers={total_steps_tiers.map(tier => tier * this.state.users.length)}
+              teamTiers={total_steps_tiers.map(tier => tier * this.state.competition.users.length)}
               stepsForUser={user => user.total_steps.value}
             />
             <StepsCard
               title="Yesterday's Steps"
-              users={this.state.users}
-              team={team_step_info.yesterday}
+              users={this.state.competition.users}
+              team={this.state.competition.yesterdays_steps}
               tiers={day_step_tiers}
-              teamTiers={day_step_tiers.map(tier => tier * this.state.users.length)}
+              teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
               stepsForUser={user => user.yesterdays_steps.value}
             />
             <StepsCard
               title="Average Steps"
-              users={this.state.users}
-              team={team_step_info.average}
+              users={this.state.competition.users}
+              team={this.state.competition.average_steps}
               tiers={day_step_tiers}
-              teamTiers={day_step_tiers.map(tier => tier * this.state.users.length)}
+              teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
               stepsForUser={user => user.average_steps.value}
             />
           </div>
@@ -95,9 +69,7 @@ class App extends Component {
             <ParticipantLeaderboard
               totalStepTiers={total_steps_tiers}
               dayStepTiers={day_step_tiers}
-              teamStepInfo={team_step_info}
-              participantsInfo={participants_info}
-              loggedInUser={1}
+              competition={this.state.competition}
             />
           </Flexbox>
         );
@@ -115,33 +87,38 @@ class App extends Component {
     } else {
       GraphQL({
         query:`
-          query Users {
-            users {
-              _id
-              user_id
-              average_steps {
-                value
-              }
-              profile {
-                avatar
-                displayName
+          query Competition {
+            competition {
+              average_steps
+              total_steps
+              yesterdays_steps
+              users {
                 user_id
-              }
-              time_series {
-                date
-                value
-              }
-              total_steps {
-                value
-              }
-              yesterdays_steps {
-                date
-                value
+                average_steps {
+                  value
+                }
+                total_steps {
+                  value
+                }
+                profile {
+                  avatar
+                  displayName
+                  user_id
+                }
+                time_series {
+                  date
+                  value
+                  user_id
+                }
+                yesterdays_steps {
+                  date
+                  value
+                }
               }
             }
           }`,
       }).then(res => {
-        this.setState({users: res.data.users});
+        this.setState({competition: res.data.competition});
       });
       return (<div></div>);
     }

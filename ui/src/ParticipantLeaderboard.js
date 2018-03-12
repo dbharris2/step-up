@@ -9,18 +9,33 @@ const EVERYONE_ICON = "https://im-01.gifer.com/J4dN.gif";
 class ParticipantLeaderboard extends Component {
   render() {
     let contestantRows = [];
-    for (let person of this.props.participantsInfo) {
+    for (let person of this.props.competition.users) {
       contestantRows.push(
         <tr key={person["id"]} className="ParticipantLeaderboard-table-row">
           <td>
             <Flexbox key={0} className="ParticipantLeaderboard-cell" alignItems="center">
-              <img className="ParticipantLeaderboard-rounded-corners" src={person.avatar} width={48} height={48} hspace={8} />
-              {person["name"]}
+              <img className="ParticipantLeaderboard-rounded-corners" src={person.profile.avatar} width={48} height={48} hspace={8} />
+              {person.profile.displayName}
             </Flexbox>
           </td>
-          <td key={1} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person.yesterdays_steps} tiers={this.props.dayStepTiers} /> </td>
-          <td key={2} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person["average"]} tiers={this.props.dayStepTiers} /> </td>
-          <td key={3} className="ParticipantLeaderboard-cell"> <ProgressBar steps={person["total"]} tiers={this.props.totalStepTiers} /> </td>
+          <td key={1} className="ParticipantLeaderboard-cell">
+            <ProgressBar
+              steps={person.yesterdays_steps.value}
+              tiers={this.props.dayStepTiers}
+            />
+          </td>
+          <td key={2} className="ParticipantLeaderboard-cell">
+            <ProgressBar
+              steps={person.average_steps.value}
+              tiers={this.props.dayStepTiers}
+            />
+          </td>
+          <td key={3} className="ParticipantLeaderboard-cell">
+            <ProgressBar
+              steps={person.total_steps.value}
+              tiers={this.props.totalStepTiers}
+            />
+          </td>
         </tr>
       );
     }
@@ -48,13 +63,22 @@ class ParticipantLeaderboard extends Component {
                 </Flexbox>
               </td>
               <td className="ParticipantLeaderboard-cell">
-                <ProgressBar steps={this.props.teamStepInfo["yesterday"]} tiers={this.props.dayStepTiers.map(tier => tier * this.props.participantsInfo.length)} />
+                <ProgressBar
+                  steps={this.props.competition.yesterdays_steps}
+                  tiers={this.props.dayStepTiers.map(tier => tier * this.props.participantsInfo.length)}
+                />
               </td>
               <td className="ParticipantLeaderboard-cell">
-                <ProgressBar steps={this.props.teamStepInfo["average"]} tiers={this.props.dayStepTiers.map(tier => tier * this.props.participantsInfo.length)} />
+                <ProgressBar
+                  steps={this.props.competition.average_steps}
+                  tiers={this.props.dayStepTiers.map(tier => tier * this.props.participantsInfo.length)}
+                />
               </td>
               <td className="ParticipantLeaderboard-cell">
-                <ProgressBar steps={this.props.teamStepInfo["total"]} tiers={this.props.totalStepTiers.map(tier => tier * this.props.participantsInfo.length)} />
+                <ProgressBar
+                  steps={this.props.competition.total_steps}
+                  tiers={this.props.totalStepTiers.map(tier => tier * this.props.participantsInfo.length)}
+                />
               </td>
             </tr>
           </tfoot>
