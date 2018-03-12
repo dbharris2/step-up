@@ -47,11 +47,6 @@ app.get('/fitbit-callback', async (req, res) => {
   res.redirect('/');
 });
 
-app.get('/profiles', async (req, res) => {
-  const profiles = await stepup_service.genAllData('/profile.json');
-  res.send(profiles);
-});
-
 export const start = async () => {
   MongoClient.connect(process.env.MONGODB_URI, async (err, client) => {
     if (err) {
