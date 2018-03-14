@@ -3,7 +3,8 @@ import './App.css';
 import Flexbox from 'flexbox-react';
 import ParticipantLeaderboard from './ParticipantLeaderboard';
 import GraphQL from './graphql';
-import StepsCard from './StepsCard'
+import StepsCard from './StepsCard';
+import CompetitionInfo from './CompetitionInfo';
 
 class App extends Component {
 
@@ -81,6 +82,7 @@ class App extends Component {
             <h4>Steps 4 Days</h4>
             <a className="App-join" href="/authenticate">Join the Fun!</a>
           </Flexbox>
+          <CompetitionInfo competition={this.state.competition} />
           {this.state.width < 500 ? mobileUI() : desktopUI()}
         </Flexbox>
       );
@@ -90,6 +92,10 @@ class App extends Component {
           query Competition {
             competition {
               average_steps
+              days_in
+              end_date
+              length
+              start_date
               total_steps
               yesterdays_steps
               users {
