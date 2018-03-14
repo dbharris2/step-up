@@ -43,7 +43,7 @@ class ProgressBar extends Component {
         }
         //let style = {"width": `${percent}%`};
         let style = {"width": `0%`}
-
+        let className = "ProgressBar-FilledIn"
         switch (beatTier) {
             case 0:
                 style["backgroundColor"] = "#EB3B49";
@@ -56,13 +56,14 @@ class ProgressBar extends Component {
                 break;
             default:
                 style["backgroundColor"] = "#7E1DFF";
+                className = "ProgressBar-GoalMet"
                 break;
         }
         return (
             <div className="ProgressBar-Wrapper">
                 {this.props.steps} steps
                 <div className="ProgressBar-Container">
-                    <div className="ProgressBar-FilledIn" style={style} ref={(ref) => this.handleMarkerRef(ref)}> </div>
+                    <div className={className} style={style} ref={(ref) => this.handleMarkerRef(ref)}> </div>
                 </div>
             </div>
         );

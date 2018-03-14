@@ -7,8 +7,34 @@
     align-items: flex-end;
 }
 
+.ProgressBar-GoalMet {
+    background-image: linear-gradient(
+    45deg,
+    #E838BF 25%,
+    transparent 25%,
+    transparent 50%,
+    #E838BF 50%,
+    #E838BF 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 100px 100px;
+  height: 0.75rem;
+}
+
 .ProgressBar-FilledIn {
     height: 0.75rem;
+    background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 100px 100px;
 }
 
 .ProgressBar-Wrapper {
