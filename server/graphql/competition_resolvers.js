@@ -11,7 +11,7 @@ const competitionQueryResolvers = {
     const competition_length = time_series_responses[0].time_series['activities-steps'].length;
 
     const start_date = new Date("2017-04-20");
-    const end_date = new Date("2017-06-09");
+    const end_date = new Date("2017-06-08");
     const length = (new DateDiff(end_date, start_date)).days() + 1;
     const individual_tiers = [10000, 12500, 15000];
 
