@@ -25,11 +25,6 @@ export default class StepUpService {
     return data_responses;
   }
 
-  async genAllData(url) {
-    const data_responses = await this.genAll(url);
-    return data_responses.map(response => response.data[0]);
-  }
-
   async genAllUserProfiles() {
     const responses = await this.genAll('/profile.json');
     const profile_promises = responses.map(async response =>
