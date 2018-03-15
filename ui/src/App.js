@@ -103,20 +103,18 @@ class App extends Component {
               total_steps
               total_tiers
               users {
-                user_id
-                yesterdays_steps
                 average_steps
-                total_steps
                 profile {
                   avatar
                   displayName
-                  user_id
                 }
                 time_series {
                   date
                   value
-                  user_id
                 }
+                total_steps
+                user_id
+                yesterdays_steps
               }
               yesterdays_steps
             }
