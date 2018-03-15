@@ -13,7 +13,7 @@ const competitionQueryResolvers = {
     const start_date = new Date("2017-04-20");
     const end_date = new Date("2017-06-08");
     const length = (new DateDiff(end_date, start_date)).days() + 1;
-    const individual_tiers = [10000, 12500, 15000];
+    const individual_tiers = [12500, 15000, 17500];
 
     return {
       average_steps: Math.round(time_series_responses.reduce((accumulator, time_series_response) => {
