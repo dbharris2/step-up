@@ -29,9 +29,6 @@ class App extends Component {
   };
 
   render() {
-    const total_steps_tiers = [200000, 215000, 225000];
-    const day_step_tiers = [10000, 12500, 15000];
-
     if (this.state.competition !== null) {
       const mobileUI = () => {
         return (
@@ -40,24 +37,30 @@ class App extends Component {
               title="Total Steps"
               users={this.state.competition.users}
               team={this.state.competition.total_steps}
-              tiers={total_steps_tiers}
-              teamTiers={total_steps_tiers.map(tier => tier * this.state.competition.users.length)}
+              tiers={this.state.competition.total_tiers}
+              teamTiers={this.state.competition.total_tiers.map(tier =>
+                tier * this.state.competition.users.length
+              )}
               stepsForUser={user => user.total_steps}
             />
             <StepsCard
               title="Yesterday's Steps"
               users={this.state.competition.users}
               team={this.state.competition.yesterdays_steps}
-              tiers={day_step_tiers}
-              teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
+              tiers={this.state.competition.individual_tiers}
+              teamTiers={this.state.competition.individual_tiers.map(tier =>
+                tier * this.state.competition.users.length
+              )}
               stepsForUser={user => user.yesterdays_steps}
             />
             <StepsCard
               title="Average Steps"
               users={this.state.competition.users}
               team={this.state.competition.average_steps}
-              tiers={day_step_tiers}
-              teamTiers={day_step_tiers.map(tier => tier * this.state.competition.users.length)}
+              tiers={this.state.competition.individual_tiers}
+              teamTiers={this.state.competition.individual_tiers.map(tier =>
+                tier * this.state.competition.users.length
+              )}
               stepsForUser={user => user.average_steps}
             />
           </div>
@@ -68,8 +71,8 @@ class App extends Component {
         return (
           <Flexbox flexDirection="row" alignItems="center">
             <ParticipantLeaderboard
-              totalStepTiers={total_steps_tiers}
-              dayStepTiers={day_step_tiers}
+              totalStepTiers={this.state.competition.total_tiers}
+              dayStepTiers={this.state.competition.individual_tiers}
               competition={this.state.competition}
             />
           </Flexbox>
@@ -94,10 +97,11 @@ class App extends Component {
               average_steps
               days_in
               end_date
+              individual_tiers
               length
               start_date
               total_steps
-              yesterdays_steps
+              total_tiers
               users {
                 user_id
                 yesterdays_steps
@@ -114,6 +118,7 @@ class App extends Component {
                   user_id
                 }
               }
+              yesterdays_steps
             }
           }`,
       }).then(res => {
