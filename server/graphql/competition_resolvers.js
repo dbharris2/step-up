@@ -1,5 +1,9 @@
 import DateDiff from 'date-diff';
 
+function format_date(date) {
+  return (date.getMonth() + 1) + '/' + (date.getDate() + 1) + '/' + date.getFullYear();
+}
+
 const competitionQueryResolvers = {
   competition: async (root, {}, context) => {
     const users = await context.db.collection('users').find({}).toArray();
@@ -18,10 +22,10 @@ const competitionQueryResolvers = {
         }, 0);
       }, 0) / competition_length),
       days_in: competition_length,
-      end_date: (end_date.getMonth() + 1) + '/' + (end_date.getDate() + 1) + '/' + end_date.getFullYear(),
+      end_date: format_date(end_date),
       individual_tiers: individual_tiers,
       length: length,
-      start_date: (start_date.getMonth() + 1) + '/' + (start_date.getDate() + 1) + '/' + start_date.getFullYear(),
+      start_date: format_date(start_date),
       total_steps: time_series_responses.reduce((accumulator, time_series_response) => {
         return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
           return accumulator + parseInt(data.value);
