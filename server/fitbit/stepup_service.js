@@ -9,20 +9,25 @@ export default class StepUpService {
   }
 
   async genAll(url) {
+    console.log('gen: ' + url);
     const data_promises = this.clients.map(client => {
       return client.stepup_client.gen(
         url,
         client.user,
       );
     });
-    const data_responses = await Promise.all(data_promises);
 
-    const user_update_promises = data_responses.map(response => {
-      return this.db_service.genReplaceUser(response.user);
-    });
-    await Promise.all(user_update_promises);
-
-    return data_responses;
+    try {
+      const data_responses = await Promise.all(data_promises);
+      const user_update_promises = data_responses.map(response => {
+        return this.db_service.genReplaceUser(response.user);
+      });
+      await Promise.all(user_update_promises);
+      return data_responses;
+    } catch (e) {
+      console.log(e.context.errors[0]);
+      return {};
+    }
   }
 
   async genAllUserProfiles() {
@@ -85,6 +90,19 @@ export default class StepUpService {
 
   async genReplaceUserProfile(profile) {
     return await this.db_service.genReplaceUserProfile(profile);
+  }
+
+  FORCIBLY_refreshAccessTokens() {
+    console.log('Forcibly refresh access tokens for everyone');
+    this.clients.map(async client => {
+      console.log('Current refresh token: ' + client.user.refresh_token);
+      const updated_user = await client.stepup_client.genRefreshAccessToken(client.user);
+      if (updated_user === null) {
+        console.log('Failed to refresh access token for user: ' + client.user.user_id);
+      } else {
+        this.db_service.genReplaceUser(client.user);
+      }
+    });
   }
 
   setDb(db) {

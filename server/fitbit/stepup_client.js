@@ -11,29 +11,49 @@ export default class StepUpClient {
   }
 
   async gen(url, user) {
+    console.log(user.user_id + ' gen: ' + url);
     const data = await this.client.get(url, user.access_token);
-    if (data[0].success === undefined) {
+    const success = data[0].success;
+    if (success === undefined || success === true) {
       return {
         user: user,
         data: data,
       };
-    } else if (!data[0].success && data[0].errors[0].errorType === 'expired_token') {
-      const updated_user = await this.client.refreshAccessToken(
-        user.access_token,
-        user.refresh_token,
-        -1,
-      );
+    } else if (this.isAccessTokenExpired(data)) {
+      const updated_user = await this.genRefreshAccessToken(user);
       const updated_data = await this.client.get(url, updated_user.access_token);
       return {
         user: updated_user,
         data: updated_data,
       };
     } else {
+      console.log(e.context.errors[0]);
       return {};
     }
   }
 
+  isAccessTokenExpired(data) {
+    return data[0].errors[0].errorType === 'expired_token'
+      ? data[0].errors[0].message.includes('Access token expired')
+      : false;
+  }
+
+  async genRefreshAccessToken(user) {
+    console.log('Refreshing access token for user: ' + user.user_id);
+    try {
+      return await this.client.refreshAccessToken(
+        user.access_token,
+        user.refresh_token,
+        -1,
+      );
+    } catch (e) {
+      console.log(e.context.errors[0]);
+      return null;
+    }
+  }
+
   async genAccessToken(code, callbackUrl) {
+    console.log('Gen Access token');
     return await this.client.getAccessToken(code, callbackUrl);
   }
 
