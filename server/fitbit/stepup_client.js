@@ -1,3 +1,4 @@
+import axios from 'axios';
 import FitbitApiClient from 'fitbit-node';
 
 export default class StepUpClient {
@@ -28,6 +29,7 @@ export default class StepUpClient {
       };
     } else {
       console.log(e.context.errors[0]);
+      await axios.post(process.env.DAILY_STEPS_CHANNEL_URL, {'text': e.context.errors[0]});
       return {};
     }
   }
@@ -48,6 +50,7 @@ export default class StepUpClient {
       );
     } catch (e) {
       console.log(e.context.errors[0]);
+      await axios.post(process.env.DAILY_STEPS_CHANNEL_URL, {'text': e.context.errors[0]});
       return null;
     }
   }

@@ -1,5 +1,9 @@
 import DbService from './db_service';
 import StepUpClient from './stepup_client';
+import {
+  getDateForYesterdaysSteps,
+  getStartOfCompetition,
+} from '../utils/date_helpers';
 
 export default class StepUpService {
 
@@ -40,7 +44,8 @@ export default class StepUpService {
 
   async genAllUserTimeSeries() {
     const responses = await this.genAll(
-      '/activities/steps/date/2017-04-20/2017-06-08.json'
+      // '/activities/steps/date/2017-04-20/2017-06-08.json'
+      '/activities/steps/date/' + getStartOfCompetition() + '/' + getDateForYesterdaysSteps() + '.json'
     );
     const time_series_promises = responses.map(async response =>
       this.genReplaceUserTimeSeries(
