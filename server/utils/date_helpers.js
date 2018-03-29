@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 
 export function formatDate(date_string) {
   const date = new Date(date_string);
-  return (date.getMonth() + 1) + '/' + (date.getDate() + 1) + '/' + date.getFullYear();
+  return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 }
 
 export function getDateForYesterdaysSteps() {
