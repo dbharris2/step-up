@@ -8,9 +8,13 @@ const EVERYONE_ICON = "https://im-01.gifer.com/J4dN.gif";
 class ParticipantLeaderboard extends Component {
   render() {
     let contestantRows = [];
+    let i = 1;
     for (let person of this.props.competition.users) {
       contestantRows.push(
         <tr key={person["id"]} className="ParticipantLeaderboard-table-row">
+          <td>
+            {i}
+          </td>
           <td>
             <Flexbox key={0} className="ParticipantLeaderboard-cell" alignItems="center">
               <img className="ParticipantLeaderboard-rounded-corners" src={person.profile.avatar} width={48} height={48} hspace={8} />
@@ -37,6 +41,7 @@ class ParticipantLeaderboard extends Component {
           </td>
         </tr>
       );
+      i++;
     }
     return (
       <div className="ParticipantLeaderboard">
@@ -44,6 +49,7 @@ class ParticipantLeaderboard extends Component {
         <table className="ParticipantLeaderboard-table">
           <thead className="ParticipantLeaderboard-header">
             <tr key="head" className="ParticipantLeadboard-header-row">
+              <td className="ParticipantLeaderboard-header-cell ParticipantLeaderboard-cell"> Rank </td>
               <td className="ParticipantLeaderboard-header-cell ParticipantLeaderboard-cell"> Name </td>
               <td className="ParticipantLeaderboard-header-cell ParticipantLeaderboard-cell"> Yesterdays Steps </td>
               <td className="ParticipantLeaderboard-header-cell ParticipantLeaderboard-cell"> Average Steps </td>
@@ -55,6 +61,7 @@ class ParticipantLeaderboard extends Component {
           </tbody>
           <tfoot className="ParticipantLeaderboard-footer">
             <tr key="team" className="ParticipantLeaderboard-table-row">
+              <td></td>
               <td>
                 <Flexbox key={0} className="ParticipantLeaderboard-cell" alignItems="center">
                   <img className="ParticipantLeaderboard-rounded-corners" src={EVERYONE_ICON} width={48} height={48} hspace={8} />

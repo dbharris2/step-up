@@ -28,8 +28,20 @@ class App extends Component {
     this.setState({ width: window.innerWidth });
   };
 
+  sortUsers(a, b) {
+    if (a.total_steps < b.total_steps) {
+      return 1;
+    } else if (a.total_steps > b.total_steps) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
   render() {
     if (this.state.competition !== null) {
+      this.state.competition.users.sort(this.sortUsers);
+
       const mobileUI = () => {
         return (
           <div className="App-cards">
