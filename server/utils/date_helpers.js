@@ -1,11 +1,6 @@
 import DateDiff from 'date-diff';
 import moment from 'moment-timezone';
 
-export function formatDate(date_string) {
-  const date = new Date(date_string);
-  return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-}
-
 export function getDateForYesterdaysSteps() {
   if (getLengthBetweenDates(getToday(), getEndOfCompetition()) > 0) {
     return getYesterday();
@@ -19,11 +14,11 @@ export function getEndOfCompetition() {
 }
 
 export function getLengthBetweenDates(start_date, end_date) {
-  return (new DateDiff(new Date(end_date), new Date(start_date))).days() + 1;
+  return (new DateDiff(new Date(end_date), new Date(start_date))).days();
 }
 
 export function getStartOfCompetition() {
-  return "2018-03-20";
+  return "2018-03-31";
 }
 
 function getYesterday() {
@@ -32,7 +27,7 @@ function getYesterday() {
   return yesterday;
 }
 
-function getToday() {
+export function getToday() {
   const today = new moment.utc().subtract('7', 'hours').format('YYYY-MM-DD');
   console.log('Today: ' + today);
   return today;

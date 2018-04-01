@@ -3,6 +3,7 @@ import {
   getEndOfCompetition,
   getLengthBetweenDates,
   getStartOfCompetition,
+  getToday,
 } from '../utils/date_helpers';
 
 
@@ -10,7 +11,6 @@ const competitionQueryResolvers = {
   competition: async (root, {}, context) => {
     const users = await context.db.collection('users').find({}).toArray();
     const time_series_responses = await context.db.collection('fitbit_time_series').find({}).toArray();
-    const competition_length = time_series_responses[0].time_series['activities-steps'].length;
 
     const start_date = getStartOfCompetition();
     const end_date = getEndOfCompetition();
@@ -22,12 +22,12 @@ const competitionQueryResolvers = {
         return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
           return accumulator + parseInt(data.value);
         }, 0);
-      }, 0) / competition_length),
-      days_in: competition_length,
-      end_date: formatDate(end_date),
+      }, 0) / time_series_responses[0].time_series['activities-steps'].length),
+      days_in: getLengthBetweenDates(start_date, getToday()),
+      end_date: end_date,
       individual_tiers: individual_tiers,
       length: length,
-      start_date: formatDate(start_date),
+      start_date: start_date,
       total_steps: time_series_responses.reduce((accumulator, time_series_response) => {
         return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
           return accumulator + parseInt(data.value);
