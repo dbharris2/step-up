@@ -18,7 +18,7 @@ export function getLengthBetweenDates(start_date, end_date) {
 }
 
 export function getStartOfCompetition() {
-  return "2018-03-31";
+  return "2018-04-01";
 }
 
 function getYesterday() {
