@@ -23,22 +23,20 @@ export default class StepUpService {
 
     try {
       const data_responses = await Promise.all(data_promises);
-      const user_update_promises = data_responses.map(response => {
-        return this.db_service.genReplaceUser(response.user);
-      });
-      await Promise.all(user_update_promises);
+      const users = data_responses.map(response => response.user);
+      const user_promises = users.map(user => this.db_service.genReplaceUser(user))
+      await Promise.all(user_promises);
       return data_responses;
     } catch (e) {
-      console.log(e.context.errors[0]);
+      console.log(e);
       return {};
     }
   }
 
   async genAllUserProfiles() {
     const responses = await this.genAll('/profile.json');
-    const profile_promises = responses.map(async response =>
-      this.genReplaceUserProfile(response.data[0])
-    );
+    const profiles = responses.map(response => response.data[0]);
+    const profile_promises = profiles.map(profile => this.genReplaceUserProfile(profile));
     await Promise.all(profile_promises);
   }
 
@@ -46,12 +44,12 @@ export default class StepUpService {
     const responses = await this.genAll(
       '/activities/steps/date/' + getStartOfCompetition() + '/' + getDateForYesterdaysSteps() + '.json'
     );
-    const time_series_promises = responses.map(async response =>
-      this.genReplaceUserTimeSeries(
+    const time_series_promises = responses.map(response => {
+      return this.genReplaceUserTimeSeries(
         response.user.user_id,
         response.data[0],
-      )
-    );
+      );
+    });
     await Promise.all(time_series_promises);
   }
 
@@ -89,11 +87,11 @@ export default class StepUpService {
   }
 
   async genReplaceUserTimeSeries(user_id, time_series) {
-    return await this.db_service.genReplaceUserTimeSeries(user_id, time_series);
+    return this.db_service.genReplaceUserTimeSeries(user_id, time_series);
   }
 
   async genReplaceUserProfile(profile) {
-    return await this.db_service.genReplaceUserProfile(profile);
+    return this.db_service.genReplaceUserProfile(profile);
   }
 
   FORCIBLY_refreshAccessTokens() {
@@ -104,6 +102,7 @@ export default class StepUpService {
       if (updated_user === null) {
         console.log('Failed to refresh access token for user: ' + client.user.user_id);
       } else {
+        console.log('New refresh token: ' + client.user.refresh_token);
         this.db_service.genReplaceUser(client.user);
       }
     });

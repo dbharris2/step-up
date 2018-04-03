@@ -55,6 +55,8 @@ export const start = async () => {
     }
     stepup_service.setDb(client.db('stepup'));
     await stepup_service.genFetchUsers();
+    await stepup_service.genAllUserProfiles();
+    await stepup_service.genAllUserTimeSeries();
 
     app.use('/graphiql', graphiqlExpress({endpointURL: '/graphql'}));
     app.use('/', bodyParser.json(), graphqlExpress({
