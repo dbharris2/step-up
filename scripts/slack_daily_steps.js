@@ -9,32 +9,61 @@ const GraphQL = createApolloFetch({
 const start = async () => {
   const response = await GraphQL({
     query:`
-      query Users {
-        users {
-          profile {
-            displayName
-          }
-          yesterdays_steps {
-            date
-            value
+      query SlackbotAverageSteps {
+        competition {
+          average_steps
+          individual_tiers
+          users {
+            average_steps
+            profile {
+              displayName
+            }
           }
         }
       }`,
   });
 
-  const firstTierUsers = response.data.users.filter(user => {
-    return user.yesterdays_steps.value >= 12000;
+  response.data.competition.users.sort((a, b) => {
+    if (a.average_steps < b.average_steps) {
+      return 1;
+    } else if (a.average_steps > b.average_steps) {
+      return -1;
+    } else {
+      return 0;
+    }
   });
 
-  const secondTierUsers = response.data.users.filter(user => {
-    return user.yesterdays_steps.value >= 11000 && user.yesterdays_steps.value < 12000;
+  const users_with_tiers = response.data.competition.users.map(user => {
+    let current_tier = 0;
+    response.data.competition.individual_tiers.forEach(tier => {
+      if (user.average_steps >= tier) {
+        current_tier = tier;
+      }
+    });
+    return {
+      average_steps: user.average_steps,
+      name: user.profile.displayName,
+      tier: current_tier,
+    };
   });
 
-  const thirdTierUsers = response.data.users.filter(user => {
-    return user.yesterdays_steps.value >= 10000 && user.yesterdays_steps.value < 11000;
+  const firstTierUsers = users_with_tiers.filter(user => {
+    return user.average_steps >= response.data.competition.individual_tiers[2];
   });
 
-  const messages = user => user.profile.displayName + " " + user.yesterdays_steps.value;
+  const secondTierUsers = users_with_tiers.filter(user => {
+    return user.average_steps >= response.data.competition.individual_tiers[1] && user.average_steps < response.data.competition.individual_tiers[2];
+  });
+
+  const thirdTierUsers = users_with_tiers.filter(user => {
+    return user.average_steps >= response.data.competition.individual_tiers[0] && user.average_steps < response.data.competition.individual_tiers[1];
+  });
+
+  const fourthTierUsers = users_with_tiers.filter(user => {
+    return user.average_steps < response.data.competition.individual_tiers[0];
+  });
+
+  const messages = user => user.name + " " + user.average_steps;
 
   await axios.post(
     process.env.DAILY_STEPS_CHANNEL_URL,
@@ -42,22 +71,29 @@ const start = async () => {
       "attachments": [
         {
           "fallback": "Required plain-text summary of the attachment.",
-          "color": "good",
-          "pretext": "Yesterday's Steps\n Tier 1",
+          "color": "#7E1DFF",
+          "pretext": "Average Steps\n Tier 1 - <3 Pizza Parties <3",
           "text": firstTierUsers.map(user => messages(user)).join("\n")
         },
   		  {
           "fallback": "Required plain-text summary of the attachment.",
-          "color": "warning",
-          "pretext": "Tier 2",
+          "color": "#01D59A",
+          "pretext": "Tier 2 - Solid, But Pizza...",
           "text": secondTierUsers.map(user => messages(user)).join("\n")
         },
         {
           "fallback": "Required plain-text summary of the attachment.",
-          "color": "danger",
-          "pretext": "Tier 3",
+          "color": "#FCA53A",
+          "pretext": "Tier 3 - Pizza Party Haters Club",
           "text": thirdTierUsers.map(user => messages(user)).join("\n")
-        }
+        },
+        fourthTierUsers.length > 0 ?
+        {
+          "fallback": "Required plain-text summary of the attachment.",
+          "color": "#EB3B49",
+          "pretext": "Tier 4 - The Unamazing Racers Who Hate Pizza",
+          "text": fourthTierUsers.map(user => messages(user)).join("\n")
+        } : null,
       ]
     }
   );
