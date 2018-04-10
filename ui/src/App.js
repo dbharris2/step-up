@@ -46,6 +46,22 @@ class App extends Component {
         return (
           <div className="App-cards">
             <StepsCard
+              title="Average Steps"
+              users={this.state.competition.users}
+              team={this.state.competition.average_steps}
+              tiers={this.state.competition.individual_tiers}
+              teamTiers={this.state.competition.individual_tiers}
+              stepsForUser={user => user.average_steps}
+            />
+            <StepsCard
+              title="Yesterday's Steps"
+              users={this.state.competition.users}
+              team={this.state.competition.yesterdays_steps}
+              tiers={this.state.competition.individual_tiers}
+              teamTiers={this.state.competition.individual_tiers}
+              stepsForUser={user => user.yesterdays_steps}
+            />
+            <StepsCard
               title="Total Steps"
               users={this.state.competition.users}
               team={this.state.competition.total_steps}
@@ -54,26 +70,6 @@ class App extends Component {
                 tier * this.state.competition.users.length
               )}
               stepsForUser={user => user.total_steps}
-            />
-            <StepsCard
-              title="Yesterday's Steps"
-              users={this.state.competition.users}
-              team={this.state.competition.yesterdays_steps}
-              tiers={this.state.competition.individual_tiers}
-              teamTiers={this.state.competition.individual_tiers.map(tier =>
-                tier * this.state.competition.users.length
-              )}
-              stepsForUser={user => user.yesterdays_steps}
-            />
-            <StepsCard
-              title="Average Steps"
-              users={this.state.competition.users}
-              team={this.state.competition.average_steps}
-              tiers={this.state.competition.individual_tiers}
-              teamTiers={this.state.competition.individual_tiers.map(tier =>
-                tier * this.state.competition.users.length
-              )}
-              stepsForUser={user => user.average_steps}
             />
           </div>
         );

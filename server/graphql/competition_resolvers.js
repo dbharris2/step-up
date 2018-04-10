@@ -22,8 +22,8 @@ const competitionQueryResolvers = {
         return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
           return accumulator + parseInt(data.value);
         }, 0);
-      }, 0) / time_series_responses[0].time_series['activities-steps'].length),
-      days_in: getLengthBetweenDates(start_date, getToday()),
+      }, 0) / (time_series_responses[0].time_series['activities-steps'].length * users.length)),
+      days_in: getLengthBetweenDates(start_date, getToday()) + 1,
       end_date: end_date,
       individual_tiers: individual_tiers,
       length: length,
@@ -35,9 +35,9 @@ const competitionQueryResolvers = {
       }, 0),
       total_tiers: individual_tiers.map(tier => tier * length),
       users: users,
-      yesterdays_steps: time_series_responses.reduce((accumulator, time_series_response) => {
+      yesterdays_steps: Math.round(time_series_responses.reduce((accumulator, time_series_response) => {
         return accumulator + parseInt(time_series_response.time_series['activities-steps'].pop().value);
-      }, 0),
+      }, 0) / users.length),
     };
   },
 };

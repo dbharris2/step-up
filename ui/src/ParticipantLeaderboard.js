@@ -71,13 +71,13 @@ class ParticipantLeaderboard extends Component {
               <td className="ParticipantLeaderboard-cell">
                 <ProgressBar
                   steps={this.props.competition.yesterdays_steps}
-                  tiers={this.props.dayStepTiers.map(tier => tier * this.props.competition.users.length)}
+                  tiers={this.props.dayStepTiers}
                 />
               </td>
               <td className="ParticipantLeaderboard-cell">
                 <ProgressBar
                   steps={this.props.competition.average_steps}
-                  tiers={this.props.dayStepTiers.map(tier => tier * this.props.competition.users.length)}
+                  tiers={this.props.dayStepTiers}
                 />
               </td>
               <td className="ParticipantLeaderboard-cell">
