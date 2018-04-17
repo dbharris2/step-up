@@ -9,6 +9,7 @@ const Competition = `
     individual_tiers: [Int]
     length: Int
     start_date: String
+    steps_to_15k_per_user: Int
     total_steps: Int
     total_tiers: [Int]
     users: [User]

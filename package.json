@@ -6,6 +6,7 @@
   "scripts": {
     "fetch-fitbit-data": "babel-node ./scripts/fetch_fitbit_data.js",
     "slack-daily-steps": "babel-node ./scripts/slack_daily_steps.js",
+    "slack-steps-to-15k": "babel-node ./scripts/slack_steps_to_15k.js",
     "start": "babel-node server/index.js",
     "heroku-postbuild": "cd ui && npm install && npm run build"
   },

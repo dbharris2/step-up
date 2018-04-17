@@ -17,6 +17,21 @@ const competitionQueryResolvers = {
     const length = getLengthBetweenDates(start_date, end_date);
     const individual_tiers = [10000, 12500, 15000];
 
+    const total_steps = time_series_responses.reduce((accumulator, time_series_response) => {
+      return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
+        return accumulator + parseInt(data.value);
+      }, 0);
+    }, 0);
+
+    const desired_step_goal = 15000 * length * users.length;
+    console.log(desired_step_goal);
+
+    const steps_we_need_to_get = desired_step_goal - total_steps;
+    console.log(steps_we_need_to_get);
+
+    const days_still_remaining = getLengthBetweenDates(getToday(), end_date);
+    console.log(days_still_remaining);
+
     return {
       average_steps: Math.round(time_series_responses.reduce((accumulator, time_series_response) => {
         return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
@@ -28,11 +43,10 @@ const competitionQueryResolvers = {
       individual_tiers: individual_tiers,
       length: length,
       start_date: start_date,
-      total_steps: time_series_responses.reduce((accumulator, time_series_response) => {
-        return accumulator + time_series_response.time_series['activities-steps'].reduce((accumulator, data) => {
-          return accumulator + parseInt(data.value);
-        }, 0);
-      }, 0),
+      steps_to_15k_per_user: Math.round(
+        steps_we_need_to_get / (days_still_remaining * users.length)
+      ),
+      total_steps: total_steps,
       total_tiers: individual_tiers.map(tier => tier * length),
       users: users,
       yesterdays_steps: Math.round(time_series_responses.reduce((accumulator, time_series_response) => {
