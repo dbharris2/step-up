@@ -38,7 +38,7 @@ const competitionQueryResolvers = {
           return accumulator + parseInt(data.value);
         }, 0);
       }, 0) / (time_series_responses[0].time_series['activities-steps'].length * users.length)),
-      days_in: getLengthBetweenDates(start_date, getToday()) + 1,
+      days_in: getLengthBetweenDates(start_date, getToday()),
       end_date: end_date,
       individual_tiers: individual_tiers,
       length: length,

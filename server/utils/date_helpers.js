@@ -14,7 +14,7 @@ export function getEndOfCompetition() {
 }
 
 export function getLengthBetweenDates(start_date, end_date) {
-  return (new DateDiff(new Date(end_date), new Date(start_date))).days();
+  return (new DateDiff(new Date(end_date), new Date(start_date))).days() + 1;
 }
 
 export function getStartOfCompetition() {
